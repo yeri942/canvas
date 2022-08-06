@@ -20,8 +20,8 @@ window.addEventListener("mousemove", (e) => {
 });
 
 ctx.fillStyle = "white";
-ctx.font = "bold 25px Verdana";
-ctx.fillText("I Luv U", 0, 50);
+ctx.font = "30px Verdana";
+ctx.fillText("A", 0, 30);
 
 const textCoordinates = ctx.getImageData(0, 0, 100, 100);
 
@@ -32,12 +32,41 @@ class Particle {
         this.size = 3;
         this.baseX = this.x;
         this.baseY = this.y;
-        this.density = Math.random() * 8 + 1;
+        this.density = Math.random() * 2 + 1;
+        this.distance;
     }
     draw() {
-        ctx.fillStyle = "white";
+        ctx.fillStyle = "rgba(255,255,255,0.8)";
+        ctx.strokeStyle = "rgba(34,147,214,1)";
         ctx.beginPath();
-        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+
+        if (this.distance < mouse.radius - 5) {
+            // 마우스 영역-5 안에 있을때
+            this.size = 10;
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+            ctx.stroke();
+            ctx.closePath();
+            ctx.beginPath();
+            ctx.arc(this.x - 3, this.y - 3, this.size / 3, 0, Math.PI * 2);
+            ctx.arc(this.x + 3, this.y - 1, this.size / 4, 0, Math.PI * 2);
+        } else if (this.distance <= mouse.radius) {
+            // 마우스영역 -5 < 사이에 있을때 <= 마우스영역
+            this.size = 8;
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+            ctx.stroke();
+            ctx.closePath();
+            ctx.beginPath();
+            ctx.arc(this.x - 2, this.y - 2, this.size / 3, 0, Math.PI * 2);
+        } else {
+            // 마우스 영역에 닿지 않을때
+            this.size = 5;
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+            ctx.stroke();
+            ctx.closePath();
+            ctx.beginPath();
+            ctx.arc(this.x - 1, this.y - 1, this.size / 3, 0, Math.PI * 2);
+        }
+
         ctx.closePath();
         ctx.fill();
     }
@@ -45,6 +74,7 @@ class Particle {
         let dx = mouse.x - this.x;
         let dy = mouse.y - this.y;
         let distance = Math.sqrt(dx * dx + dy * dy);
+        this.distance = distance;
         let forceDirectionX = dx / distance;
         let forceDirectionY = dy / distance;
         let maxDistance = mouse.radius;
@@ -100,7 +130,7 @@ const animate = () => {
         particleArray[i].draw();
         particleArray[i].update();
     }
-    connect();
+    // connect();
     requestAnimationFrame(animate);
 };
 

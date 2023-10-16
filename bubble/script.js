@@ -4,7 +4,7 @@ canvas.height = window.innerHeight - 100;
 let particleArray = [];
 let adjustX = 5;
 let adjustY = 5;
-let newFont = new FontFace("LilitaOner", "url(/font/LilitaOner.ttf)");
+let newFont = new FontFace("LilitaOner", "url(/bubble/font/LilitaOner.ttf)");
 
 newFont.load().then((font) => {
     const ctx = canvas.getContext("2d");
@@ -19,7 +19,6 @@ newFont.load().then((font) => {
     window.addEventListener("mousemove", (e) => {
         mouse.x = e.x;
         mouse.y = e.y;
-        console.log(mouse.x, mouse.y);
     });
 
     document.fonts.add(font);
@@ -102,15 +101,8 @@ newFont.load().then((font) => {
             }
         }
     }
-
-    console.log(textCoordinates.data);
     const init = () => {
         particleArray = [];
-        // for (let i = 0; i < 1000; i++) {
-        //     let x = Math.random() * canvas.width;
-        //     let y = Math.random() * canvas.height;
-        //     particleArray.push(new Particle(x, y));
-        // }
         for (let y = 0, y2 = textCoordinates.height; y < y2; y++) {
             for (let x = 0, x2 = textCoordinates.width; x < x2; x++) {
                 if (
@@ -128,7 +120,6 @@ newFont.load().then((font) => {
         }
     };
     init();
-    console.log(particleArray);
 
     const animate = () => {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -143,9 +134,6 @@ newFont.load().then((font) => {
     const connect = () => {
         for (let a = 0; a < particleArray.length; a++) {
             for (let b = a; b < particleArray.length; b++) {
-                // let dx = mouse.x - this.x;
-                // let dy = mouse.y - this.y;
-                // let distance = Math.sqrt(dx * dx + dy * dy);
                 let dx = particleArray[a].x - particleArray[b].x;
                 let dy = particleArray[a].y - particleArray[b].y;
                 let distance = Math.sqrt(dx * dx + dy * dy);
